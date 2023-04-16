@@ -181,6 +181,6 @@ export default {
       staticDataSummary,
       someOtherField,
     };
-  },
+  }
 };
 </script>
