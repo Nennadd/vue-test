@@ -11,7 +11,7 @@
 
 <template>
   <main @click="clicksCount++">
-    <h1>{{ title }}</h1>
+    <h1>{{ title }}</h1> // Maybe it would be ok to go with slot instead of props
 
     <div>Clicks: {{ clicksCount }}</div>
     <div>Seconds elapsed: {{ secondsElapsed }}</div>
@@ -101,11 +101,9 @@ export default {
     async getAPIResponse() {
       // Will try first and fall back to second in case of error
       try {
-        const resp = await getAPIResponseOne();
-        this.apiResponse = resp;
+        this.apiResponse = await getAPIResponseOne();
       } catch (e) {
-        const resp = await getAPIResponseTwo();
-        this.apiResponse = resp;
+        this.apiResponse = await getAPIResponseTwo();
       } finally {
         setTimeout(someDOMDependentTask, 0);
       }
@@ -139,11 +137,9 @@ export default {
     // NOTE setup() function runs before options api is created, so I think there is no need for onMounted()
     async function getAPIResponse() {
       try {
-        const resp = await getAPIResponseOne();
-        apiResponse.value = resp;
+        apiResponse.value = await getAPIResponseOne();
       } catch (e) {
-        const resp = await getAPIResponseTwo();
-        apiResponse.value = resp;
+        apiResponse.value = await getAPIResponseTwo();
       } finally {
         setTimeout(someDOMDependentTask, 0);
       }
