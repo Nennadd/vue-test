@@ -7,8 +7,8 @@
 // Interval cleared in beforeDestroy() hook
 // Changed staticDataSummary() function to avoid nested for loops
 // title changed to computed
-// Added default value for a prop if its not passed to the component
 // Added scoped to style
+// Added variable for interval to be destroyed on before unmount
 
 <template>
   <main @click="clicksCount++">
@@ -66,6 +66,7 @@ export default {
       clicksCount: 0,
       secondsElapsed: 0,
       apiResponse: null,
+      interval: null
     };
   },
   props: {
@@ -77,12 +78,12 @@ export default {
   },
   created() {
     this.getAPIResponse();
-    setInterval(() => this.secondsElapsed++, 1000);
+    this.interval = setInterval(() => this.secondsElapsed++, 1000);
   },
 
   computed: {
     title() {
-      return this.title + " - MyBlog";
+      return this.title ? this.title + " - MyBlog" : "MyBlog";
     },
     timeNow() {
       let now = new Date();
@@ -111,7 +112,7 @@ export default {
     },
   },
   beforeDestroy() {
-    clearInterval(this.secondsElapsed);
+    clearInterval(this.interval);
   },
 
   // ************************************* Vue 3 Composition API  ******************************************************
@@ -120,13 +121,13 @@ export default {
       title: {
         type: String,
         required: false,
-        default: "Default Title",
       },
     });
 
     const clicksCount = ref(0);
     const secondsElapsed = ref(0);
     const apiResponse = ref(null);
+    const interval = ref(setInterval(() => secondsElapsed.value++, 1000));
 
     // Or maybe as a reactive state object
     const state = reactive({
@@ -147,7 +148,7 @@ export default {
     }
 
     const title = computed(() => {
-      return props.title + " - MyBlog";
+      return props.title ? props.title + " - MyBlog" : "MyBlog";
     });
 
     const timeNow = computed(() => {
@@ -167,7 +168,7 @@ export default {
     });
 
     onBeforeUnmount(() => {
-      clearInterval(secondsElapsed.value);
+      clearInterval(interval.value);
     });
 
     return {
