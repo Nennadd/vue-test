@@ -8,6 +8,7 @@
 // Changed staticDataSummary() function to avoid nested for loops
 // title changed to computed
 // Added default value for a prop if its not passed to the component
+// Added scoped to style
 
 <template>
   <main @click="clicksCount++">
@@ -40,7 +41,7 @@
   </main>
 </template>
 
-<style lang="scss">
+<style scoped lang="scss">
 h1 {
   color: gray;
   font-size: 60px;
